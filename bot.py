@@ -1,7 +1,7 @@
 from InstagramAPI import InstagramAPI
 from time import time, sleep
 from random import randint
-import logging, threading, glob, os, sys
+import logging, threading, glob, os, sys, codecs
 
 class Bot(object):
 	def __init__(self, username, password, img_folder, caption_file, posts_per_day, follows_per_day, keyword):
@@ -11,18 +11,19 @@ class Bot(object):
 		self.password = password
 		self.img_folder = img_folder
 		self.caption_file = caption_file
+		self.caption = self.initCaption()
 		self.posts_per_day = posts_per_day
 		self.time_between_posts = 24 * 3600 / posts_per_day
 		self.follows_per_day = follows_per_day
 		self.time_between_follows = 24 * 3600 / follows_per_day
 		self.keyword = keyword
-		self.bot = self.initBot()
+		#self.bot = self.initBot()
 		self.followers = []
 		self.followings = []
 		self.to_follow = []
-		self.updateFollowers()
-		self.updateFollowings()
-		self.updateToFollow()
+		#self.updateFollowers()
+		#self.updateFollowings()
+		#self.updateToFollow()
 
 	@property
 	def followers_nb(self):
@@ -44,6 +45,21 @@ class Bot(object):
 		bot.login()
 
 		return bot
+
+	#TODO: manage multiple captions
+	#maybe use json system with {photo:path, caption:"caption"}
+	def initCaption(self):
+		caption = ""
+		
+		try:
+			with codecs.open(self.caption_file, "r", encoding = "utf8") as f:
+				logging.info("Caption successfully loaded")
+				caption = f.read()
+		except Exception as e:
+			logging.info("No caption file, caption will be blank")
+
+		return caption
+
 
 	def updateFollowers(self):
 		self.followers = [str(user['pk']) for user in self.bot.getTotalSelfFollowers()]
@@ -134,8 +150,7 @@ class Bot(object):
 test = Bot("streetartforeveryone",
 			"THEBIBILLOU033//",
 			"images",
-			"caption.txt",
+			"caption_text.txt",
 			4,
 			150,
 			"streetart")
-test.startBotting()
