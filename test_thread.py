@@ -25,3 +25,5 @@ if __name__ == "__main__":
 	logging.info("Main    : wait for the thread to finish")
 	# x.join()
 	logging.info("Main    : all done")
+	a = 70 - 60 if (70 - 60) >= 0 else 0
+	print(a)

@@ -1,8 +1,7 @@
 from InstagramAPI import InstagramAPI
 from time import time, sleep
-import logging
-import threading
 from random import randint
+import logging, threading, glob, os, sys
 
 class Bot(object):
 	def __init__(self, username, password, img_folder, caption_file, posts_per_day, follows_per_day, keyword):
@@ -72,7 +71,7 @@ class Bot(object):
 			a = self.time_between_follows - 60 if (self.time_between_follows - 60) >= 0 else 0
 			b = self.time_between_follows + 60
 			sleep(randint(a, b))
-			
+
 			if (self.to_follow_nb == 0):
 				self.updateToFollow()
 			if (self.to_follow_nb == 0):
@@ -97,6 +96,21 @@ class Bot(object):
 				self.bot.unfollow(next_unfollow)
 				logging.info(f"Successfully unfollowed {next_unfollow}")
 	
+	def postPhoto(self):
+		while true:
+			a = self.time_between_posts - 1800 if (self.time_between_posts - 1800) >= 0 else 0
+			b = self.time_between_posts + 1800
+			sleep(randint(a, b))
+
+			#TODO: add property to get next photo
+			if (len(os.listdir(self.img_folder)) == 0):
+				logging.info(f"No more photos to upload, please add some in the {self.img_folder} folder")
+			else:
+				photo = os.listdir(self.img_folder)[0]
+				self.bot.uploadPhoto(self.img_folder + "/" + photo, self.caption)
+				logging.info(f"Successfully uploaded {photo}")
+				os.remove(self.img_folder + "/" + photo)
+
 	def toString(self):
 		return (f"{self.username} currently have "
 		f"{self.followers_nb} followers, {self.followings_nb} followings, and "
@@ -111,6 +125,7 @@ class Bot(object):
 		logging.info("Starting the bot:\n" + self.toString())
 		follow_thread = threading.Thread(target=self.follow).start()
 		unfollow_thread = threading.Thread(target=self.unfollow).start()
+		post_thread = threading.Thread(target=self.postPhoto).start()
 		info_thread = threading.Thread(target=self.info).start()
 
 			
