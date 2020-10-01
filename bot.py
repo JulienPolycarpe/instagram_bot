@@ -2,6 +2,7 @@ from InstagramAPI import InstagramAPI
 from time import time, sleep
 import logging
 import threading
+from random import randint
 
 class Bot(object):
 	def __init__(self, username, password, img_folder, caption_file, posts_per_day, follows_per_day, keyword):
@@ -68,7 +69,10 @@ class Bot(object):
 	
 	def follow(self):
 		while True:
-			sleep(self.time_between_follows)
+			a = self.time_between_follows - 60 if (self.time_between_follows - 60) >= 0 else 0
+			b = self.time_between_follows + 60
+			sleep(randint(a, b))
+			
 			if (self.to_follow_nb == 0):
 				self.updateToFollow()
 			if (self.to_follow_nb == 0):
@@ -80,7 +84,10 @@ class Bot(object):
 
 	def unfollow(self):
 		while True:
-			sleep(self.time_between_follows)
+			a = self.time_between_follows - 60 if (self.time_between_follows - 60) >= 0 else 0
+			b = self.time_between_follows + 60
+			sleep(randint(a, b))
+
 			if (self.followings_nb == 0):
 				self.updateFollowings()
 			if (self.followings_nb == 0):
