@@ -38,9 +38,6 @@ class Bot(object):
 		return len(self.to_follow)
 
 	def initBot(self):
-		followers = []
-		to_follow = []
-
 		bot = InstagramAPI(self.username, self.password)
 		bot.login()
 
@@ -146,7 +143,10 @@ class Bot(object):
 		post_thread = threading.Thread(target=self.postPhoto).start()
 		info_thread = threading.Thread(target=self.info).start()
 
-			
+
+
+if __name__ == "__main__":
+	pass
 
 		
 test = Bot("streetartforeveryone",
