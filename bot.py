@@ -70,6 +70,7 @@ class Bot(object):
 		logging.info(f"Loaded {len(self.followings)} followings")
 
 	def updateToFollow(self):
+		#TODO: manage multiple keywords (pretty simple, just add for loop)
 		if(self.bot.tagFeed(self.keyword)):
 			items = self.bot.LastJson["ranked_items"]
 			for item in items:
@@ -118,8 +119,9 @@ class Bot(object):
 			b = self.time_between_posts + 1800
 			sleep(randint(a, b))
 
-			#TODO: add property to get next photo
+			#TODO: add property to get next photo to make code clearer
 			if (len(os.listdir(self.img_folder)) == 0):
+				#TODO: automatically download new photos if no more
 				logging.info(f"No more photos to upload, please add some in the {self.img_folder} folder")
 			else:
 				photo = os.listdir(self.img_folder)[0]
