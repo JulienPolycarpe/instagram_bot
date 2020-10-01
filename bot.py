@@ -1,7 +1,7 @@
 from InstagramAPI import InstagramAPI
 from time import time, sleep
 from random import randint
-import logging, threading, glob, os, sys, codecs
+import logging, threading, glob, os, sys, codecs, argsParser
 
 class Bot(object):
 	def __init__(self, username, password, img_folder, caption_file, posts_per_day, follows_per_day, keyword):
@@ -143,10 +143,9 @@ class Bot(object):
 		post_thread = threading.Thread(target=self.postPhoto).start()
 		info_thread = threading.Thread(target=self.info).start()
 
-
-
+#TODO:load config from file
 if __name__ == "__main__":
-	pass
+	parser = argsParser.initParser()
 
 		
 test = Bot("streetartforeveryone",
