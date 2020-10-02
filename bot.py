@@ -1,4 +1,5 @@
 from InstagramAPI import InstagramAPI
+from instabot import Bot
 from time import time, sleep
 from random import randint
 import logging, threading, glob, os, sys, codecs, argsParser
@@ -117,6 +118,9 @@ class Bot(object):
 			sleep(randint(a, b))
 			images_nb = 0
 
+			upload_bot = Bot()
+			upload_bot.login(username=self.username, password=self.password)
+
 			try:
 				images_nb = len(os.listdir(self.img_folder))
 				logging.info(f"Found {images_nb} images to upload in {self.img_folder}/ folder")
@@ -129,9 +133,9 @@ class Bot(object):
 				logging.info(f"No more images to upload, please add some in the {self.img_folder} folder")
 			else:
 				image = os.listdir(self.img_folder)[0]
-				self.bot.uploadPhoto(self.img_folder + "/" + image, self.caption)
+				upload_bot.upload_photo(self.img_folder + "/" + image, caption = self.caption)
 				logging.info(f"Successfully uploaded {image}")
-				os.remove(self.img_folder + "/" + image)
+				os.remove(self.img_folder + "/" + image + ".REMOVE_ME")
 
 	def properties(self):
 		return (f"username : {self.username}"
