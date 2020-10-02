@@ -119,6 +119,7 @@ class Bot(object):
 
 			try:
 				images_nb = len(os.listdir(self.img_folder))
+				logging(f"Found {images_nb} images to upload in {self.img_folder}/ folder")
 			except expression as identifier:
 				logging.info(f"No folder specified, not uploading any images")
 
