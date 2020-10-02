@@ -12,11 +12,11 @@ class Bot(object):
 		self.img_folder = img_folder
 		self.caption_file = caption_file
 		self.caption = self.initCaption()
-		self.posts_per_day = posts_per_day
-		self.time_between_posts = 24 * 3600 / posts_per_day
-		self.follows_per_day = follows_per_day
-		self.time_between_follows = 24 * 3600 / follows_per_day
-		self.keyword = keyword
+		self.posts_per_day = posts_per_day if posts_per_day != None else 4
+		self.time_between_posts = 24 * 3600 / self.posts_per_day
+		self.follows_per_day = follows_per_day if posts_per_day != None else 100
+		self.time_between_follows = 24 * 3600 / self.follows_per_day
+		self.keyword = keyword if keyword != None else "picoftheday"
 		#self.bot = self.initBot()
 		self.followers = []
 		self.followings = []
@@ -115,16 +115,32 @@ class Bot(object):
 			a = self.time_between_posts - 1800 if (self.time_between_posts - 1800) >= 0 else 0
 			b = self.time_between_posts + 1800
 			sleep(randint(a, b))
+			images_nb = 0
 
-			#TODO: add property to get next photo to make code clearer
-			if (len(os.listdir(self.img_folder)) == 0):
-				#TODO: automatically download new photos if no more
-				logging.info(f"No more photos to upload, please add some in the {self.img_folder} folder")
+			try:
+				images_nb = len(os.listdir(self.img_folder))
+			except expression as identifier:
+				logging.info(f"No folder specified, not uploading any images")
+
+			#TODO: add property to get next image to make code clearer
+			if (images_nb == 0):
+				#TODO: automatically download new images if no more
+				logging.info(f"No more images to upload, please add some in the {self.img_folder} folder")
 			else:
-				photo = os.listdir(self.img_folder)[0]
-				self.bot.uploadPhoto(self.img_folder + "/" + photo, self.caption)
-				logging.info(f"Successfully uploaded {photo}")
-				os.remove(self.img_folder + "/" + photo)
+				image = os.listdir(self.img_folder)[0]
+				self.bot.uploadPhoto(self.img_folder + "/" + image, self.caption)
+				logging.info(f"Successfully uploaded {image}")
+				os.remove(self.img_folder + "/" + image)
+
+	def properties(self):
+		return (f"username : {self.username}"
+		f" password : {self.password}"
+		f" img_folder : {self.img_folder}"
+		f" caption_file : {self.caption_file}"
+		f" caption : {self.caption}"
+		f" posts_per_day : {self.posts_per_day}"
+		f" follows_per_day : {self.follows_per_day}"
+		f" keyword : {self.keyword}")
 
 	def toString(self):
 		return (f"{self.username} currently have "
@@ -146,7 +162,16 @@ class Bot(object):
 #TODO:load config from file
 if __name__ == "__main__":
 	parser = argsParser.initParser()
-	parser.parse_args()
+	args = parser.parse_args()
+	if ((args.username) and (args.password)):
+		img_folder = args.image_folder if args.image_folder else None
+		caption_file = args.caption_file if args.caption_file else None
+		posts_per_day = args.posts_per_day if args.posts_per_day else None
+		follows_per_day = args.follows_per_day if args.follows_per_day else None
+		keyword = args.keyword if args.keyword else None
+		bot = Bot(args.username, args.password, img_folder, caption_file,
+		posts_per_day, follows_per_day, keyword)
+		print(bot.properties())
 """
 test = Bot("streetartforeveryone",
 			"THEBIBILLOU033//",
