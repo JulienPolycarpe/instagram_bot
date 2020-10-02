@@ -111,7 +111,7 @@ class Bot(object):
 				logging.info(f"Successfully unfollowed {next_unfollow}")
 	
 	def postPhoto(self):
-		while true:
+		while True:
 			a = self.time_between_posts - 1800 if (self.time_between_posts - 1800) >= 0 else 0
 			b = self.time_between_posts + 1800
 			sleep(randint(a, b))
