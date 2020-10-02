@@ -146,8 +146,8 @@ class Bot(object):
 #TODO:load config from file
 if __name__ == "__main__":
 	parser = argsParser.initParser()
-
-		
+	parser.parse_args()
+"""
 test = Bot("streetartforeveryone",
 			"THEBIBILLOU033//",
 			"images",
@@ -155,3 +155,4 @@ test = Bot("streetartforeveryone",
 			4,
 			150,
 			"streetart")
+"""
