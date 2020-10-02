@@ -12,9 +12,9 @@ class Bot(object):
 		self.img_folder = img_folder
 		self.caption_file = caption_file
 		self.caption = self.initCaption()
-		self.posts_per_day = posts_per_day if posts_per_day != None else 4
+		self.posts_per_day = int(posts_per_day) if posts_per_day != None else 4
 		self.time_between_posts = 24 * 3600 / self.posts_per_day
-		self.follows_per_day = follows_per_day if posts_per_day != None else 100
+		self.follows_per_day = int(follows_per_day) if posts_per_day != None else 100
 		self.time_between_follows = 24 * 3600 / self.follows_per_day
 		self.keyword = keyword if keyword != None else "picoftheday"
 		self.bot = self.initBot()
