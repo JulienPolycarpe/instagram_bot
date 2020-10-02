@@ -17,13 +17,13 @@ class Bot(object):
 		self.follows_per_day = follows_per_day if posts_per_day != None else 100
 		self.time_between_follows = 24 * 3600 / self.follows_per_day
 		self.keyword = keyword if keyword != None else "picoftheday"
-		#self.bot = self.initBot()
+		self.bot = self.initBot()
 		self.followers = []
 		self.followings = []
 		self.to_follow = []
-		#self.updateFollowers()
-		#self.updateFollowings()
-		#self.updateToFollow()
+		self.updateFollowers()
+		self.updateFollowings()
+		self.updateToFollow()
 
 	@property
 	def followers_nb(self):
@@ -149,7 +149,7 @@ class Bot(object):
 
 	def info(self):
 		while True:
-			sleep(600)
+			sleep(43200)
 			logging.info(self.toString())
 
 	def startBotting(self):
@@ -171,13 +171,4 @@ if __name__ == "__main__":
 		keyword = args.keyword if args.keyword else None
 		bot = Bot(args.username, args.password, img_folder, caption_file,
 		posts_per_day, follows_per_day, keyword)
-		print(bot.properties())
-"""
-test = Bot("streetartforeveryone",
-			"THEBIBILLOU033//",
-			"images",
-			"caption_text.txt",
-			4,
-			150,
-			"streetart")
-"""
+		bot.startBotting()
