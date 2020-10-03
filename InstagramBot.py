@@ -166,7 +166,6 @@ class InstagramBot(object):
 		post_thread = threading.Thread(target=self.postPhoto).start()
 		info_thread = threading.Thread(target=self.info).start()
 
-"""
 #TODO:load config from file
 if __name__ == "__main__":
 	parser = argsParser.initParser()
@@ -180,4 +179,3 @@ if __name__ == "__main__":
 		bot = InstagramBot(args.username, args.password, img_folder, caption_file,
 		posts_per_day, follows_per_day, keyword)
 		bot.startBotting()
-"""
