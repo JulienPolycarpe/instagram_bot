@@ -133,9 +133,11 @@ class InstagramBot(object):
 				logging.info(f"No more images to upload, please add some in the {self.img_folder} folder")
 			else:
 				image = os.listdir(self.img_folder)[0]
-				upload_bot.upload_photo(self.img_folder + "/" + image, caption = self.caption)
+				folder = self.img_folder
+				caption = self.caption
+				upload_bot.upload_photo(folder + "/" + image, caption = caption)
 				logging.info(f"Successfully uploaded {image}")
-				os.remove(self.img_folder + "/" + image + ".REMOVE_ME")
+				os.remove(folder + "/" + image + ".REMOVE_ME")
 
 	def properties(self):
 		return (f"username : {self.username}"
@@ -164,6 +166,7 @@ class InstagramBot(object):
 		post_thread = threading.Thread(target=self.postPhoto).start()
 		info_thread = threading.Thread(target=self.info).start()
 
+"""
 #TODO:load config from file
 if __name__ == "__main__":
 	parser = argsParser.initParser()
@@ -177,3 +180,4 @@ if __name__ == "__main__":
 		bot = InstagramBot(args.username, args.password, img_folder, caption_file,
 		posts_per_day, follows_per_day, keyword)
 		bot.startBotting()
+"""
