@@ -75,7 +75,7 @@ class InstagramBot(object):
 				if (self.bot.getMediaLikers(item["id"])):
 					for liker in self.bot.LastJson["users"]:
 						pk = str(liker["pk"])
-						if (pk not in self.to_follow):
+						if ((pk not in self.to_follow) and (pk not in self.followers) and (pk not in self.followings)):
 							self.to_follow.append(pk)
 			logging.info(f"Loaded {len(self.to_follow)} persons to follow")
 		else:
