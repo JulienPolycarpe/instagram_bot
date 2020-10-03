@@ -4,7 +4,7 @@ from time import time, sleep
 from random import randint
 import logging, threading, glob, os, sys, codecs, argsParser
 
-class Bot(object):
+class InstagramBot(object):
 	def __init__(self, username, password, img_folder, caption_file, posts_per_day, follows_per_day, keyword):
 		format = "%(asctime)s: %(message)s"
 		logging.basicConfig(format=format, level=logging.INFO, datefmt="[%D] %H:%M:%S")
@@ -174,6 +174,6 @@ if __name__ == "__main__":
 		posts_per_day = args.posts_per_day if args.posts_per_day else None
 		follows_per_day = args.follows_per_day if args.follows_per_day else None
 		keyword = args.keyword if args.keyword else None
-		bot = Bot(args.username, args.password, img_folder, caption_file,
+		bot = InstagramBot(args.username, args.password, img_folder, caption_file,
 		posts_per_day, follows_per_day, keyword)
 		bot.startBotting()
