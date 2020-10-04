@@ -118,8 +118,10 @@ class InstagramBot(object):
 			sleep(randint(a, b))
 			images_nb = 0
 
+			username = self.username
+			password = self.password
 			upload_bot = Bot()
-			upload_bot.login(username=self.username, password=self.password)
+			upload_bot.login(username=username, password=password)
 
 			try:
 				images_nb = len(os.listdir(self.img_folder))
