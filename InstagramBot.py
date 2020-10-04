@@ -110,36 +110,6 @@ class InstagramBot(object):
 				next_unfollow = self.followings.pop(0)
 				self.bot.unfollow(next_unfollow)
 				logging.info(f"Successfully unfollowed {next_unfollow}")
-	
-	def postPhoto(self):
-		while True:
-			a = self.time_between_posts - 1800 if (self.time_between_posts - 1800) >= 0 else 0
-			b = self.time_between_posts + 1800
-			sleep(randint(a, b))
-			images_nb = 0
-
-			username = self.username
-			password = self.password
-			upload_bot = Bot()
-			upload_bot.login(username=username, password=password)
-
-			try:
-				images_nb = len(os.listdir(self.img_folder))
-				logging.info(f"Found {images_nb} images to upload in {self.img_folder}/ folder")
-			except expression as identifier:
-				logging.info(f"No folder specified, not uploading any images")
-
-			#TODO: add property to get next image to make code clearer
-			if (images_nb == 0):
-				#TODO: automatically download new images if no more
-				logging.info(f"No more images to upload, please add some in the {self.img_folder} folder")
-			else:
-				image = os.listdir(self.img_folder)[0]
-				folder = self.img_folder
-				caption = self.caption
-				upload_bot.upload_photo(folder + "/" + image, caption = caption)
-				logging.info(f"Successfully uploaded {image}")
-				os.remove(folder + "/" + image + ".REMOVE_ME")
 
 	def properties(self):
 		return (f"username : {self.username}"
@@ -165,7 +135,6 @@ class InstagramBot(object):
 		logging.info("Starting the bot:\n" + self.toString())
 		follow_thread = threading.Thread(target=self.follow).start()
 		unfollow_thread = threading.Thread(target=self.unfollow).start()
-		post_thread = threading.Thread(target=self.postPhoto).start()
 		info_thread = threading.Thread(target=self.info).start()
 
 #TODO:load config from file
@@ -181,3 +150,29 @@ if __name__ == "__main__":
 		bot = InstagramBot(args.username, args.password, img_folder, caption_file,
 		posts_per_day, follows_per_day, keyword)
 		bot.startBotting()
+		upload_bot = Bot()
+		upload_bot.login(username = args.username, password = args.password)
+
+		while True:
+			a = bot.time_between_posts - 1800 if (bot.time_between_posts - 1800) >= 0 else 0
+			b = bot.time_between_posts + 1800
+			sleep(randint(a, b))
+			images_nb = 0
+
+			try:
+				images_nb = len(os.listdir(bot.img_folder))
+				logging.info(f"Found {images_nb} images to upload in {bot.img_folder}/ folder")
+			except expression as identifier:
+				logging.info(f"No folder specified, not uploading any images")
+
+			#TODO: add property to get next image to make code clearer
+			if (images_nb == 0):
+				#TODO: automatically download new images if no more
+				logging.info(f"No more images to upload, please add some in the {bot.img_folder} folder")
+			else:
+				image = os.listdir(bot.img_folder)[0]
+				folder = bot.img_folder
+				caption = bot.caption
+				upload_bot.upload_photo(folder + "/" + image, caption = caption)
+				logging.info(f"Successfully uploaded {image}")
+				os.remove(folder + "/" + image + ".REMOVE_ME")
