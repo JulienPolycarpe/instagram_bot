@@ -19,6 +19,7 @@ class InstagramBot(object):
 		self.time_between_follows = 24 * 3600 / self.follows_per_day
 		self.keyword = keyword if keyword != None else "picoftheday"
 		self.bot = self.initBot()
+		self.upload_bot = self.initUploadBot()
 		self.followers = []
 		self.followings = []
 		self.to_follow = []
@@ -41,6 +42,12 @@ class InstagramBot(object):
 	def initBot(self):
 		bot = InstagramAPI(self.username, self.password)
 		bot.login()
+
+		return bot
+
+	def initUploadBot(self):
+		bot = Bot()
+		bot.login(username = self.username, password = self.password)
 
 		return bot
 
@@ -131,11 +138,37 @@ class InstagramBot(object):
 			sleep(43200)
 			logging.info(self.toString())
 
+	def uploadNewPicture(self):
+		while True:
+			a = self.time_between_posts - 1800 if (self.time_between_posts - 1800) >= 0 else 0
+			b = self.time_between_posts + 1800
+			sleep(randint(a, b))
+
+			try:
+				images_nb = len(os.listdir(self.img_folder))
+				logging.info(f"Found {images_nb} images to upload in {self.img_folder}/ folder")
+			except expression as identifier:
+				logging.info(f"No folder specified, not uploading any images")
+
+			#TODO: add property to get next image to make code clearer
+			if (images_nb == 0):
+				#TODO: automatically download new images if no more
+				logging.info(f"No more images to upload, please add some in the {self.img_folder} folder")
+			else:
+				image = os.listdir(self.img_folder)[0]
+				folder = self.img_folder
+				caption = self.caption
+				self.upload_bot.upload_photo(folder + "/" + image, caption = caption)
+				logging.info(f"Successfully uploaded {image}")
+				os.remove(folder + "/" + image + ".REMOVE_ME")
+			break
+
 	def startBotting(self):
 		logging.info("Starting the bot:\n" + self.toString())
 		follow_thread = threading.Thread(target=self.follow).start()
 		unfollow_thread = threading.Thread(target=self.unfollow).start()
 		info_thread = threading.Thread(target=self.info).start()
+		post_thread = threading.Thread(target=self.uploadNewPicture).start()
 
 #TODO:load config from file
 if __name__ == "__main__":
@@ -150,29 +183,3 @@ if __name__ == "__main__":
 		bot = InstagramBot(args.username, args.password, img_folder, caption_file,
 		posts_per_day, follows_per_day, keyword)
 		bot.startBotting()
-		upload_bot = Bot()
-		upload_bot.login(username = args.username, password = args.password)
-
-		while True:
-			a = bot.time_between_posts - 1800 if (bot.time_between_posts - 1800) >= 0 else 0
-			b = bot.time_between_posts + 1800
-			sleep(randint(a, b))
-			images_nb = 0
-
-			try:
-				images_nb = len(os.listdir(bot.img_folder))
-				logging.info(f"Found {images_nb} images to upload in {bot.img_folder}/ folder")
-			except expression as identifier:
-				logging.info(f"No folder specified, not uploading any images")
-
-			#TODO: add property to get next image to make code clearer
-			if (images_nb == 0):
-				#TODO: automatically download new images if no more
-				logging.info(f"No more images to upload, please add some in the {bot.img_folder} folder")
-			else:
-				image = os.listdir(bot.img_folder)[0]
-				folder = bot.img_folder
-				caption = bot.caption
-				upload_bot.upload_photo(folder + "/" + image, caption = caption)
-				logging.info(f"Successfully uploaded {image}")
-				os.remove(folder + "/" + image + ".REMOVE_ME")
