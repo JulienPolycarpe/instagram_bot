@@ -129,6 +129,9 @@ class InstagramBot(object):
 		f" keyword : {self.keyword}")
 
 	def toString(self):
+		self.updateFollowers()
+		self.updateFollowings()
+		self.updateToFollow()
 		return (f"{self.username} currently have "
 		f"{self.followers_nb} followers, {self.followings_nb} followings, and "
 		f"{self.to_follow_nb} persons to follow next")
