@@ -164,7 +164,6 @@ class InstagramBot(object):
 				self.upload_bot.upload_photo(folder + "/" + image, caption = caption)
 				logging.info(f"Successfully uploaded {image}")
 				os.remove(folder + "/" + image + ".REMOVE_ME")
-			break
 
 	def startBotting(self):
 		logging.info("Starting the bot:\n" + self.toString())
