@@ -161,9 +161,13 @@ class InstagramBot(object):
 				image = os.listdir(self.img_folder)[0]
 				folder = self.img_folder
 				caption = self.caption
-				self.upload_bot.upload_photo(folder + "/" + image, caption = caption)
-				logging.info(f"Successfully uploaded {image}")
-				os.remove(folder + "/" + image + ".REMOVE_ME")
+				try:
+					self.upload_bot.upload_photo(folder + "/" + image, caption = caption)
+					logging.info(f"Successfully uploaded {image}")
+					os.remove(folder + "/" + image + ".REMOVE_ME")
+				except:
+					logging.info(f"Error while uploading {image}, deleting it")
+					os.remove(folder + "/" + image)
 
 	def startBotting(self):
 		logging.info("Starting the bot:\n" + self.toString())
